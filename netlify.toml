@@ -1,6 +1,6 @@
 [[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/server"
+  from = "/q=*"
+  to = "/.netlify/functions/server/q=:splat"
   status = 200
 
 [build]
