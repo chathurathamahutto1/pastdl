@@ -1,5 +1,4 @@
 const cheerio = require('cheerio');
-const fs = require('fs');
 
 function scrapePastPapers(html, year) {
   try {
