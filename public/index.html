@@ -22,7 +22,11 @@
       const year = urlParams.get('q') || '2017';
       try {
         const response = await fetch(`/.netlify/functions/scraper?year=${year}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
+        console.log('API Response:', data); // Log the response for debugging
         const papersDiv = document.getElementById('papers');
         if (data.success) {
           papersDiv.innerHTML = `
@@ -38,9 +42,10 @@
             </ul>
           `;
         } else {
-          papersDiv.innerHTML = `<p class="error">Failed to load papers for year ${year}</p>`;
+          papersDiv.innerHTML = `<p class="error">Failed to load papers for year ${year}: ${data.message}</p>`;
         }
       } catch (error) {
+        console.error('Fetch Error:', error); // Log the error for debugging
         document.getElementById('papers').innerHTML = `<p class="error">Error: ${error.message}</p>`;
       }
     }
