@@ -3,14 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>G.C.E Advanced Level Past Papers</title>
+  <title>G.C.E A/L Past Papers</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
-    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    h1 { color: #333; }
+    #papers { margin-top: 20px; }
+    .paper { margin-bottom: 10px; }
+    .error { color: red; }
   </style>
 </head>
 <body>
-  <h1>G.C.E Advanced Level Past Papers</h1>
-  <p>Access past papers for 2017 at <a href="/q=2017">/q=2017</a></p>
+  <h1>G.C.E Advanced Level Exam Past Papers</h1>
+  <div id="papers">Loading...</div>
+
+  <script>
+    async function fetchPapers() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const year = urlParams.get('q') || '2017';
+      try {
+        const response = await fetch(`/.netlify/functions/scraper?year=${year}`);
+        const data = await response.json();
+        const papersDiv = document.getElementById('papers');
+        if (data.success) {
+          papersDiv.innerHTML = `
+            <p><strong>Creator:</strong> ${data.creator}</p>
+            <p><strong>Year:</strong> ${data.year}</p>
+            <h2>Past Papers</h2>
+            <ul>
+              ${data.papers.map(paper => `
+                <li class="paper">
+                  ${paper.subject}: <a href="${paper.downloadLink}" target="_blank">Download</a>
+                </li>
+              `).join('')}
+            </ul>
+          `;
+        } else {
+          papersDiv.innerHTML = `<p class="error">Failed to load papers for year ${year}</p>`;
+        }
+      } catch (error) {
+        document.getElementById('papers').innerHTML = `<p class="error">Error: ${error.message}</p>`;
+      }
+    }
+
+    fetchPapers();
+  </script>
 </body>
 </html>
