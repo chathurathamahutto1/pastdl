@@ -17,7 +17,7 @@ exports.handler = async (event) => {
       return {
         statusCode: response.status,
         body: JSON.stringify({
-          creator: 'Chathura Hansak',
+          creator: 'Chathura Hansaka',
           year: parseInt(year),
           success: false,
           papers: [],
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 200,
         body: JSON.stringify({
-          creator: 'Chathura Hansak',
+          creator: 'Chathura Hansaka',
           year: parseInt(year),
           success: false,
           papers: [],
@@ -54,7 +54,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        creator: 'Chathura Hansak',
+        creator: 'Chathura Hansaka',
         year: parseInt(year),
         success: true,
         papers
@@ -64,7 +64,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        creator: 'Chathura Hansak',
+        creator: 'Chathura Hansaka',
         year: event.queryStringParameters?.year || 'unknown',
         success: false,
         papers: [],
