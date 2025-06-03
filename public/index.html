@@ -3,18 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>G.C.E A/L Past Papers</title>
+  <title>G.C.E A/L Past Papers JSON Output</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     h1 { color: #333; }
-    #papers { margin-top: 20px; }
-    .paper { margin-bottom: 10px; }
+    pre { 
+      background-color: #f4f4f4; 
+      padding: 15px; 
+      border-radius: 5px; 
+      overflow-x: auto; 
+      white-space: pre-wrap; 
+      word-wrap: break-word; 
+    }
     .error { color: red; }
   </style>
 </head>
 <body>
-  <h1>G.C.E Advanced Level Exam Past Papers</h1>
-  <div id="papers">Loading...</div>
+  <h1>G.C.E Advanced Level Exam Past Papers (JSON Output)</h1>
+  <div id="output">Loading...</div>
 
   <script>
     async function fetchPapers() {
@@ -27,26 +33,12 @@
         }
         const data = await response.json();
         console.log('API Response:', data); // Log for debugging
-        const papersDiv = document.getElementById('papers');
-        if (data.success) {
-          papersDiv.innerHTML = `
-            <p><strong>Creator:</strong> ${data.creator}</p>
-            <p><strong>Year:</strong> ${data.year}</p>
-            <h2>Past Papers</h2>
-            <ul>
-              ${data.papers.map(paper => `
-                <li class="paper">
-                  ${paper.subject}: <a href="${paper.downloadLink}" target="_blank">Download</a>
-                </li>
-              `).join('')}
-            </ul>
-          `;
-        } else {
-          papersDiv.innerHTML = `<p class="error">Failed to load papers for year ${year}: ${data.message}</p>`;
-        }
+        const outputDiv = document.getElementById('output');
+        // Display the JSON string with proper formatting
+        outputDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
       } catch (error) {
         console.error('Fetch Error:', error);
-        document.getElementById('papers').innerHTML = `<p class="error">Error: ${error.message}</p>`;
+        document.getElementById('output').innerHTML = `<p class="error">Error: ${error.message}</p>`;
       }
     }
 
