@@ -1,56 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>G.C.E A/L Past Papers</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { color: #333; }
-    #papers { margin-top: 20px; }
-    .paper { margin-bottom: 10px; }
-    .error { color: red; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2017 A/L Past Papers - Sri Lanka</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .papers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .paper-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .paper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+        
+        .paper-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .download-icon {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .error {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            border-left: 5px solid #d63031;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .papers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                gap: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>G.C.E Advanced Level Exam Past Papers</h1>
-  <div id="papers">Loading...</div>
+    <div class="container">
+        <h1>🇱🇰 2017 A/L Past Papers</h1>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Scraping past papers from govdoc.lk...</p>
+        </div>
+        
+        <div id="stats" class="stats" style="display: none;"></div>
+        
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="papers" class="papers-grid"></div>
+    </div>
 
-  <script>
-    async function fetchPapers() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const year = urlParams.get('q') || '2017';
-      try {
-        const response = await fetch(`/.netlify/functions/scraper?year=${year}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+    <script>
+        async function loadPastPapers() {
+            try {
+                const response = await fetch('/.netlify/functions/scrapper');
+                const data = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.error) {
+                    showError(data.error);
+                    return;
+                }
+                
+                displayStats(data.papers.length);
+                displayPapers(data.papers);
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                showError('Failed to load past papers: ' + error.message);
+            }
         }
-        const data = await response.json();
-        console.log('API Response:', data); // Log the response for debugging
-        const papersDiv = document.getElementById('papers');
-        if (data.success) {
-          papersDiv.innerHTML = `
-            <p><strong>Creator:</strong> ${data.creator}</p>
-            <p><strong>Year:</strong> ${data.year}</p>
-            <h2>Past Papers</h2>
-            <ul>
-              ${data.papers.map(paper => `
-                <li class="paper">
-                  ${paper.subject}: <a href="${paper.downloadLink}" target="_blank">Download</a>
-                </li>
-              `).join('')}
-            </ul>
-          `;
-        } else {
-          papersDiv.innerHTML = `<p class="error">Failed to load papers for year ${year}: ${data.message}</p>`;
+        
+        function displayStats(count) {
+            const statsHtml = `
+                <div class="stat-item">
+                    <span class="stat-number">${count}</span>
+                    <span class="stat-label">Subjects Available</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2017</span>
+                    <span class="stat-label">A/L Papers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">🇱🇰</span>
+                    <span class="stat-label">Sinhala Medium</span>
+                </div>
+            `;
+            
+            document.getElementById('stats').innerHTML = statsHtml;
+            document.getElementById('stats').style.display = 'flex';
         }
-      } catch (error) {
-        console.error('Fetch Error:', error); // Log the error for debugging
-        document.getElementById('papers').innerHTML = `<p class="error">Error: ${error.message}</p>`;
-      }
-    }
-
-    fetchPapers();
-  </script>
+        
+        function displayPapers(papers) {
+            const papersHtml = papers.map(paper => `
+                <div class="paper-card">
+                    <div class="paper-title">${paper.subject}</div>
+                    <a href="${paper.downloadUrl}" class="download-btn" target="_blank" rel="noopener">
+                        <span class="download-icon">📥</span>
+                        Download PDF
+                    </a>
+                </div>
+            `).join('');
+            
+            document.getElementById('papers').innerHTML = papersHtml;
+        }
+        
+        function showError(message) {
+            document.getElementById('error').innerHTML = `
+                <h3>❌ Error</h3>
+                <p>${message}</p>
+            `;
+            document.getElementById('error').style.display = 'block';
+        }
+        
+        // Load papers when page loads
+        loadPastPapers();
+    </script>
 </body>
 </html>
