@@ -1,17 +1,15 @@
 {
-  "name": "past-papers-scraper",
+  "name": "chathurapass",
   "version": "1.0.0",
-  "description": "Scraper for G.C.E Advanced Level Past Papers",
-  "main": "netlify/functions/server.js",
+  "description": "G.C.E A/L Past Papers Scraper",
+  "main": "netlify/functions/scraper.js",
   "scripts": {
-    "start": "node netlify/functions/server.js"
+    "start": "netlify dev"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
-    "express": "^4.18.2",
-    "serverless-http": "^3.2.0"
+    "cheerio": "^1.0.0-rc.12"
   },
-  "engines": {
-    "node": ">=14.16.0"
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
   }
 }
