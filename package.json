@@ -2,9 +2,9 @@
   "name": "past-papers-scraper",
   "version": "1.0.0",
   "description": "Scraper for G.C.E Advanced Level Past Papers",
-  "main": "src/server.js",
+  "main": "netlify/functions/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node netlify/functions/server.js"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
@@ -12,6 +12,6 @@
     "serverless-http": "^3.2.0"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=14.16.0"
   }
 }
