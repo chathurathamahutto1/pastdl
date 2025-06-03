@@ -1,0 +1,16 @@
+{
+  "name": "past-papers-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for G.C.E Advanced Level Past Papers",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
