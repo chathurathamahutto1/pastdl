@@ -1,34 +1,16 @@
 {
-  "name": "pastdl-scraper",
+  "name": "chathurapass",
   "version": "1.0.0",
-  "description": "Sri Lankan A/L Past Papers Scraper for 2017",
-  "main": "index.js",
+  "description": "G.C.E A/L Past Papers Scraper",
+  "main": "netlify/functions/scraper.js",
   "scripts": {
-    "dev": "netlify dev",
-    "build": "echo 'No build step required'",
     "start": "netlify dev"
   },
-  "keywords": [
-    "sri-lanka",
-    "past-papers",
-    "a-level",
-    "education",
-    "scraper",
-    "netlify"
-  ],
-  "author": "Your Name",
-  "license": "MIT",
   "dependencies": {
-    "jsdom": "^22.1.0"
+    "axios": "^1.7.2",
+    "cheerio": "^1.0.0-rc.12"
   },
   "devDependencies": {
     "netlify-cli": "^17.0.0"
-  },
-  "engines": {
-    "node": ">=16.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "your-repo-url"
   }
 }
